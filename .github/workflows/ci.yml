@@ -1,0 +1,32 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  test-action:
+    name: GitHub Actions Test
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Markdown Code Inject
+        id: markdown-code-inject
+        uses: ./
+
+      - name: Auto-commit
+        id: auto-commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: '*.md'
+          commit_message: 🤖 Commiting markdown-code-inject changes
